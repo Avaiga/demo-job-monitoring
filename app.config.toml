@@ -26,6 +26,11 @@ storage_type = "pickle"
 scope = "SCENARIO:SCOPE"
 cacheable = "False:bool"
 
+[DATA_NODE.raise_exception_output]
+storage_type = "pickle"
+scope = "SCENARIO:SCOPE"
+cacheable = "False:bool"
+
 [DATA_NODE.fixed_value]
 storage_type = "pickle"
 scope = "SCENARIO:SCOPE"
@@ -36,6 +41,11 @@ default_data = ["1:int", "19:int", "20000:int"]
 inputs = ["dataset:SECTION"]
 function = "job_monitoring.algo.debug.long_running:function"
 outputs = ["long_running_output:SECTION"]
+
+[TASK.raise_exception]
+inputs = ["dataset:SECTION"]
+function = "job_monitoring.algo.debug.raise_exception:function"
+outputs = ["raise_exception_output:SECTION"]
 
 [TASK.preprocess]
 inputs = ["dataset:SECTION"]
@@ -63,3 +73,7 @@ tasks = ["predict:SECTION"]
 
 [PIPELINE.long_running]
 tasks = ["long_running:SECTION"]
+
+
+[PIPELINE.raise_exception]
+tasks = ["raise_exception:SECTION"]

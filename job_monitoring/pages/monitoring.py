@@ -14,10 +14,23 @@ def get_all_jobs():
             job.id,
             job.creation_date.strftime("%b %d %Y %H:%M:%S"),
             str(job.status),
-            False,
         ]
 
     return [_job_to_fields(job) for job in taipy.get_jobs()]
+
+
+def get_job_by_id(id):
+    found = [job for job in taipy.get_jobs() if job.id == id]
+    if found:
+        return found[0]
+    return None
+
+
+def get_job_by_index(index):
+    all_jobs = taipy.get_jobs()
+    if len(all_jobs) > index:
+        return all_jobs[index]
+    return None
 
 
 # -----------------------------------------------------------------------------
@@ -90,10 +103,17 @@ def on_table_edit(state, var_name, action, payload):
 
 def on_table_delete(state, var_name, action, payload):
     job_index = payload["index"]
-    job_to_delete = taipy.get_jobs()[job_index]
+    job_to_delete = get_job_by_index(job_index)
     taipy.delete_job(job_to_delete, force=True)
-    # Refresh the table
+
     refresh_job_list(state)
+
+
+def on_table_click(state, table, action, payload):
+    job_index = payload["index"]
+    selected_job = get_job_by_index(job_index)
+    state.selected_job = selected_job
+    state.show_details_pane = True
 
 
 def refresh_job_list(state):
@@ -105,21 +125,27 @@ columns = {
     "1": {"title": "Job ID"},
     "2": {"title": "Creation Date"},
     "3": {"title": "Status"},
-    "4": {"title": "Cancel"},
 }
 
-page_md = """
-<|{all_jobs}|table|columns={columns}|width='100%'|editable=columns[4]|on_edit={on_table_edit}|on_delete={on_table_delete}|>
 
-<|Refresh List|button|on_action={refresh_job_list}|>
-<|Run Pipeline...|button|on_action={open_run_pipeline_dialog}|>
-<|{show_dialog_run_pipeline}|dialog|title=Run pipeline...|
+def get_status(job: Job):
+    if not job:
+        return None
+    return job.status.name.lower()
 
-<|{selected_pipeline}|selector|lov={all_pipelines()}|>
 
-<|Run|button|on_action={run_pipeline}|>
-<|Cancel|button|on_action={close_run_pipeline_dialog}|>
-|>
-"""
+def cancel_selected_job(state):
+    job_id = state.selected_job.id
+    taipy.cancel_job(state.selected_job)
+    state.show_details_pane = False
+    refresh_job_list(state)
+    state.selected_job = get_job_by_id(job_id)
 
-page = Markdown(page_md)
+
+def delete_selected_job(state):
+    taipy.delete_job(state.selected_job, force=True)
+    state.show_details_pane = False
+    refresh_job_list(state)
+
+
+page = Markdown("job_monitoring/pages/monitoring.md")
