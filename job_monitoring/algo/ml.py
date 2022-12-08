@@ -32,7 +32,9 @@ def train(dataset):
     X_test, Y_test = X[split:], Y[split:]
 
     # Using scikit-learn default
-    regression = LogisticRegression(random_state=0).fit(X_train, Y_train)
+    regression = LogisticRegression(random_state=0, max_iter=10000).fit(
+        X_train.values, Y_train.values.ravel()
+    )
 
     # Accuracy of our model:
     print(f"intercept: {regression.intercept_} coefficients: {regression.coef_}")

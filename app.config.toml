@@ -21,11 +21,21 @@ storage_type = "pickle"
 scope = "SCENARIO:SCOPE"
 cacheable = "False:bool"
 
+[DATA_NODE.long_running_output]
+storage_type = "pickle"
+scope = "SCENARIO:SCOPE"
+cacheable = "False:bool"
+
 [DATA_NODE.fixed_value]
 storage_type = "pickle"
 scope = "SCENARIO:SCOPE"
 cacheable = "False:bool"
 default_data = ["1:int", "19:int", "20000:int"]
+
+[TASK.long_running]
+inputs = ["dataset:SECTION"]
+function = "job_monitoring.algo.debug.long_running:function"
+outputs = ["long_running_output:SECTION"]
 
 [TASK.preprocess]
 inputs = ["dataset:SECTION"]
@@ -50,3 +60,6 @@ tasks = ["preprocess:SECTION", "train:SECTION"]
 
 [PIPELINE.predict]
 tasks = ["predict:SECTION"]
+
+[PIPELINE.long_running]
+tasks = ["long_running:SECTION"]
