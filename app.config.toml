@@ -1,0 +1,65 @@
+
+[DATA_NODE.dataset]
+storage_type = "csv"
+scope = "SCENARIO:SCOPE"
+cacheable = "False:bool"
+default_path = "data/data.csv"
+headers = "True:bool"
+
+[DATA_NODE.preprocessed]
+storage_type = "pickle"
+scope = "SCENARIO:SCOPE"
+cacheable = "False:bool"
+
+[DATA_NODE.prediction_model]
+storage_type = "pickle"
+scope = "SCENARIO:SCOPE"
+cacheable = "False:bool"
+
+[DATA_NODE.prediction]
+storage_type = "pickle"
+scope = "SCENARIO:SCOPE"
+cacheable = "False:bool"
+
+[DATA_NODE.long_running_output]
+storage_type = "pickle"
+scope = "SCENARIO:SCOPE"
+cacheable = "False:bool"
+
+[DATA_NODE.fixed_value]
+storage_type = "pickle"
+scope = "SCENARIO:SCOPE"
+cacheable = "False:bool"
+default_data = ["1:int", "19:int", "20000:int"]
+
+[TASK.long_running]
+inputs = ["dataset:SECTION"]
+function = "job_monitoring.algo.debug.long_running:function"
+outputs = ["long_running_output:SECTION"]
+
+[TASK.preprocess]
+inputs = ["dataset:SECTION"]
+function = "job_monitoring.algo.ml.preprocess:function"
+outputs = ["preprocessed:SECTION"]
+
+[TASK.train]
+inputs = ["preprocessed:SECTION"]
+function = "job_monitoring.algo.ml.train:function"
+outputs = ["prediction_model:SECTION"]
+
+[TASK.predict]
+inputs = ["fixed_value:SECTION", "prediction_model:SECTION"]
+function = "job_monitoring.algo.ml.predict:function"
+outputs = ["prediction:SECTION"]
+
+[PIPELINE.default]
+tasks = []
+
+[PIPELINE.train]
+tasks = ["preprocess:SECTION", "train:SECTION"]
+
+[PIPELINE.predict]
+tasks = ["predict:SECTION"]
+
+[PIPELINE.long_running]
+tasks = ["long_running:SECTION"]
