@@ -1,7 +1,7 @@
 from taipy.gui import Markdown
 
 content = """
-# Job monitoring Demo
+# Job Monitoring Demo
 """
 
 page = Markdown(content)
