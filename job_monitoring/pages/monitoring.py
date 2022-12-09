@@ -6,7 +6,7 @@ from runtime import App
 
 
 def get_all_jobs():
-    """Returns all the known jobs as a array of fields."""
+    """Returns all the known jobs (as a array of fields)."""
 
     def _job_to_fields(job: Job) -> list[str]:
         return [
@@ -19,7 +19,17 @@ def get_all_jobs():
     return [_job_to_fields(job) for job in taipy.get_jobs()]
 
 
+def get_all_pipelines():
+    """Returns all pipelines (as an array of ids)"""
+    return [
+        pipeline.id
+        for pipeline in Config.pipelines.values()
+        if pipeline.id != "default"  # we explicitely get rid of the "default" pipeline
+    ]
+
+
 def get_job_by_id(id):
+    """Return a job from its id"""
     found = [job for job in taipy.get_jobs() if job.id == id]
     if found:
         return found[0]
@@ -27,26 +37,34 @@ def get_job_by_id(id):
 
 
 def get_job_by_index(index):
+    """Return a job from its index"""
     all_jobs = taipy.get_jobs()
     if len(all_jobs) > index:
         return all_jobs[index]
     return None
 
 
+def get_status(job: Job):
+    """Get the status of the given job as string."""
+    if not job:
+        return None
+    return job.status.name.lower()
+
+
 # -----------------------------------------------------------------------------
-# Dialog "Run pipeline"
+# Callbacks / UI function
+
+
+def refresh_job_list(state):
+    """Refresh the job list"""
+    state.all_jobs = get_all_jobs()
 
 
 def job_updated(state_id, pipeline, job):
     """Callback called when a job has been updated."""
 
-    # If job is already in the list
-    def _update_job(state, new_job):
-        # Refresh the table
-        state.all_jobs = get_all_jobs()
-
     # invoke_callback allows to run a function with a GUI _state_.
-    invoke_callback(App().gui, state_id, _update_job, args=[job.id])
+    invoke_callback(App().gui, state_id, refresh_job_list, args=[])
 
 
 def open_run_pipeline_dialog(state):
@@ -79,59 +97,11 @@ def run_pipeline(state):
     taipy.submit(pipeline)
 
 
-def all_pipelines():
-    return [
-        pipeline.id
-        for pipeline in Config.pipelines.values()
-        if pipeline.id != "default"
-    ]
-
-
-def on_table_edit(state, var_name, action, payload):
-    job_index = payload["index"]
-    column_index = payload["col"]
-
-    # Marker for cancellation
-    if column_index == "4":
-        if payload["user_value"]:
-            job_to_cancel = taipy.get_jobs()[job_index]
-            taipy.cancel_job(job_to_cancel.id)
-
-    # Refresh the table
-    refresh_job_list(state)
-
-
-def on_table_delete(state, var_name, action, payload):
-    job_index = payload["index"]
-    job_to_delete = get_job_by_index(job_index)
-    taipy.delete_job(job_to_delete, force=True)
-
-    refresh_job_list(state)
-
-
 def on_table_click(state, table, action, payload):
     job_index = payload["index"]
     selected_job = get_job_by_index(job_index)
     state.selected_job = selected_job
     state.show_details_pane = True
-
-
-def refresh_job_list(state):
-    state.all_jobs = get_all_jobs()
-
-
-columns = {
-    "0": {"title": "Submit ID"},
-    "1": {"title": "Job ID"},
-    "2": {"title": "Creation Date"},
-    "3": {"title": "Status"},
-}
-
-
-def get_status(job: Job):
-    if not job:
-        return None
-    return job.status.name.lower()
 
 
 def cancel_selected_job(state):
@@ -146,6 +116,21 @@ def delete_selected_job(state):
     taipy.delete_job(state.selected_job, force=True)
     state.show_details_pane = False
     refresh_job_list(state)
+
+
+# -----------------------------------------------------------------------------
+# UI Configuration
+
+columns = {
+    "0": {"title": "Submit ID"},
+    "1": {"title": "Job ID"},
+    "2": {"title": "Creation Date"},
+    "3": {"title": "Status"},
+}
+
+
+# -----------------------------------------------------------------------------
+# Page
 
 
 page = Markdown("job_monitoring/pages/monitoring.md")

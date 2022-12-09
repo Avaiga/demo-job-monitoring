@@ -5,7 +5,6 @@ from taipy.config.config import Config
 from taipy.gui import Gui
 import os
 
-
 # Variables for bindings
 all_jobs = []
 show_dialog_run_pipeline = False

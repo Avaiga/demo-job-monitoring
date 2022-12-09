@@ -1,9 +1,9 @@
-<|{all_jobs}|table|columns={columns}|width='100%'|editable=columns[4]|on_edit={on_table_edit}|on_delete={on_table_delete}|on_action=on_table_click|>
+<|{all_jobs}|table|columns={columns}|width='100%'|on_action={on_table_click}|>
 <|Refresh List|button|on_action={refresh_job_list}|>
 <|Run Pipeline...|button|on_action={open_run_pipeline_dialog}|>
 
 <|{show_dialog_run_pipeline}|dialog|title=Run pipeline...|
-<|{selected_pipeline}|selector|lov={all_pipelines()}|>
+<|{selected_pipeline}|selector|lov={get_all_pipelines()}|>
 <|Run|button|on_action={run_pipeline}|>
 <|Cancel|button|on_action={close_run_pipeline_dialog}|>
 |>
