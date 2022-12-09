@@ -44,7 +44,15 @@ The table now shows two jobs:
 * a "preprocess" task (it's JOB ID is `JOB_preprocess_28d29a7e-aada-4f7c-82c2-65ae0e095f69` here-above, but may be different for you) 
 * a "train" task (it's JOB ID is `JOB_train_9cbb7b4c-2a6d-43ba-9336-b4cd209d889e` but can be different for you)
 
-Those two jobs are already in status "COMPLETED" because they are very fast to execute.
+Those two jobs are fast and are already in status "COMPLETED".
+
+You can open the details of the job by clicking on a row. This opens a side panel with details:
+<p align="center">
+  <img src="docs/image4.png" alt="drawing" width="700"/>
+</p>
+
+If a job has failed because of a code exception, then the side panel will display the related stack trace.
+
 
 
 You can run two other pipelines: the "predict" pipeline which would use the output of the "train" pipeline to run a simple Logistic Regression model using Scikit-Learn, or a "long_running" pipeline which does nothing else than simulating a 20 seconds jobs.
