@@ -12,16 +12,18 @@ selected_pipeline = None
 show_details_pane = False
 selected_job = None
 
-# Initialize Taipy objects
-Config.load("app.config.toml")
-App().core = taipy.Core()
-App().gui = Gui(pages={"/": root.page, "monitoring": monitoring.page})
 
+if __name__ == "__main__":
+    # Initialize Taipy objects
+    Config.configure_job_executions(mode="standalone", nb_of_workers=4)
+    Config.load("app.config.toml")
+    App().core = taipy.Core()
+    App().gui = Gui(pages={"/": root.page, "monitoring": monitoring.page})
 
-# Start the app
-App().start(
-    title="Job Monitoring Demo",
-    port=os.environ.get("PORT", "8000"),
-    dark_mode=False,
-    css_file="app",
-)
+    # Start the app
+    App().start(
+        title="Job Monitoring Demo",
+        port=os.environ.get("PORT", "8080"),
+        dark_mode=False,
+        css_file="app",
+    )
