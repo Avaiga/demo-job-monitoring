@@ -4,19 +4,10 @@ Run jobs and see their progress using a simple Taipy table.
 
 More information on Taipy [here](https://www.taipy.io).
 
-## Installation
-
-Use `poetry` to install the depencencies (https://python-poetry.org/docs/#installing-with-the-official-installer).
-
-```sh
-poetry install
-poetry run python job_monitoring/main.py
-```
-
 ## Demo Type
 
 **Level**: Advanced
-**Topic**: Taipy-Core, Taipy-GUI 
+**Topic**: Taipy-Core, Taipy-GUI
 
 **Components**: TOML-based configuration, Job execution API
 
@@ -40,8 +31,8 @@ Select the `train` pipeline for example (the demo comes with a very simple Logis
   <img src="docs/image3.png" alt="drawing" width="700"/>
 </p>
 
-The table now shows two jobs: 
-* a "preprocess" task (it's JOB ID is `JOB_preprocess_28d29a7e-aada-4f7c-82c2-65ae0e095f69` here-above, but may be different for you) 
+The table now shows two jobs:
+* a "preprocess" task (it's JOB ID is `JOB_preprocess_28d29a7e-aada-4f7c-82c2-65ae0e095f69` here-above, but may be different for you)
 * a "train" task (it's JOB ID is `JOB_train_9cbb7b4c-2a6d-43ba-9336-b4cd209d889e` but can be different for you)
 
 Those two jobs are fast and are already in status "COMPLETED".
@@ -62,9 +53,13 @@ After 20 seconds, the job will automatically appears as "COMPLETED" in the user 
  - `data/` contains a simple dataset for the logistic regresion example (which is out of scope of this demo).
  - `job_monitoring/` contains the main source code. This is where you can find the main `main.py` file to run the app.
     - `job_monitoring/algo` contains the code to be execute in Taipy pipelines: the file `ml.py` contains a simple logistic regression problem, and `debug.py` a simple code to make a long running task.
-    - `job_monitoring/pages` contains the code for the pages of the app. The main page is `monitoring.py`. This code has been in such a way that you can just copy/paste it into your own app to get the job monitoring table. 
- - `app.config.toml` contains the configuration for this Taipy app. It basically defines the data nodes, tasks and pipelines configuration.  
+    - `job_monitoring/pages` contains the code for the pages of the app. The main page is `monitoring.py`. This code has been in such a way that you can just copy/paste it into your own app to get the job monitoring table.
+ - `app.config.toml` contains the configuration for this Taipy app. It basically defines the data nodes, tasks and pipelines configuration.
  - `CONTRIBUTING.md` instructions to contribute to this demo
+ - `INSTALLATION.md` instructions to install this demo
  - `LICENSE` the Apache 2.0 license.
- - `pyproject.toml` the poetry configuration file
  - `README.md` this file
+
+ ## Installation
+
+Want to install _Demo Job Monitoring_? Check out our [`INSTALLATION.md`](INSTALLATION.md) file.

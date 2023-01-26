@@ -39,27 +39,27 @@ default_data = ["1:int", "19:int", "20000:int"]
 
 [TASK.long_running]
 inputs = ["dataset:SECTION"]
-function = "job_monitoring.algo.debug.long_running:function"
+function = "algo.debug.long_running:function"
 outputs = ["long_running_output:SECTION"]
 
 [TASK.raise_exception]
 inputs = ["dataset:SECTION"]
-function = "job_monitoring.algo.debug.raise_exception:function"
+function = "algo.debug.raise_exception:function"
 outputs = ["raise_exception_output:SECTION"]
 
 [TASK.preprocess]
 inputs = ["dataset:SECTION"]
-function = "job_monitoring.algo.ml.preprocess:function"
+function = "algo.ml.preprocess:function"
 outputs = ["preprocessed:SECTION"]
 
 [TASK.train]
 inputs = ["preprocessed:SECTION"]
-function = "job_monitoring.algo.ml.train:function"
+function = "algo.ml.train:function"
 outputs = ["prediction_model:SECTION"]
 
 [TASK.predict]
 inputs = ["fixed_value:SECTION", "prediction_model:SECTION"]
-function = "job_monitoring.algo.ml.predict:function"
+function = "algo.ml.predict:function"
 outputs = ["prediction:SECTION"]
 
 [PIPELINE.default]
