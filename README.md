@@ -58,8 +58,16 @@ After 20 seconds, the job will automatically appears as "COMPLETED" in the user 
  - `CONTRIBUTING.md` instructions to contribute to this demo
  - `INSTALLATION.md` instructions to install this demo
  - `LICENSE` the Apache 2.0 license.
+ - `Pipfile`: File used by the Pipenv virtual environment to manage project dependencies.
  - `README.md` this file
 
  ## Installation
 
 Want to install _Demo Job Monitoring_? Check out our [`INSTALLATION.md`](INSTALLATION.md) file.
+## Contributing
+
+Want to help build _demo <INSERT-DEMO-NAME>_? Check out our [`CONTRIBUTING.md`](CONTRIBUTING.md) file.
+
+## Code of conduct
+
+Want to be part of the _demo <INSERT-DEMO-NAME>_ community? Check out our [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) file.
