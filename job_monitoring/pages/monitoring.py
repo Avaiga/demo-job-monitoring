@@ -1,4 +1,4 @@
-import taipy
+import taipy as tp
 from taipy.gui import get_state_id, invoke_callback, Markdown
 from taipy.config.config import Config
 from taipy.core.job.job import Job
@@ -16,7 +16,7 @@ def get_all_jobs():
             str(job.status),
         ]
 
-    return [_job_to_fields(job) for job in taipy.get_jobs()]
+    return [_job_to_fields(job) for job in tp.get_jobs()]
 
 
 def get_all_pipelines():
@@ -30,7 +30,7 @@ def get_all_pipelines():
 
 def get_job_by_id(id):
     """Return a job from its id"""
-    found = [job for job in taipy.get_jobs() if job.id == id]
+    found = [job for job in tp.get_jobs() if job.id == id]
     if found:
         return found[0]
     return None
@@ -38,7 +38,7 @@ def get_job_by_id(id):
 
 def get_job_by_index(index):
     """Return a job from its index"""
-    all_jobs = taipy.get_jobs()
+    all_jobs = tp.get_jobs()
     if len(all_jobs) > index:
         return all_jobs[index]
     return None
@@ -54,6 +54,16 @@ def get_status(job: Job):
 # -----------------------------------------------------------------------------
 # Callbacks / UI function
 
+def on_style(state, index, row):
+    status_index = 3
+    if 'RUNNING' in row[status_index]:
+        return 'blue'
+    if 'COMPLETED' in row[status_index]:
+        return 'green'
+    if 'BLOCKED' in row[status_index]:
+        return 'orange'
+    if 'FAILED' in row[status_index]:
+        return 'red'
 
 def refresh_job_list(state):
     """Refresh the job list"""
@@ -92,9 +102,9 @@ def run_pipeline(state):
     # Close the dialog
     close_run_pipeline_dialog(state)
 
-    pipeline = taipy.create_pipeline(pipeline_config)
-    taipy.subscribe_pipeline(pipeline=pipeline, callback=job_updated, params=[state_id])
-    taipy.submit(pipeline)
+    pipeline = tp.create_pipeline(pipeline_config)
+    tp.subscribe_pipeline(pipeline=pipeline, callback=job_updated, params=[state_id])
+    tp.submit(pipeline)
 
 
 def on_table_click(state, table, action, payload):
@@ -106,14 +116,14 @@ def on_table_click(state, table, action, payload):
 
 def cancel_selected_job(state):
     job_id = state.selected_job.id
-    taipy.cancel_job(state.selected_job)
+    tp.cancel_job(state.selected_job)
     state.show_details_pane = False
     refresh_job_list(state)
     state.selected_job = get_job_by_id(job_id)
 
 
 def delete_selected_job(state):
-    taipy.delete_job(state.selected_job, force=True)
+    tp.delete_job(state.selected_job, force=True)
     state.show_details_pane = False
     refresh_job_list(state)
 

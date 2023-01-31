@@ -1,4 +1,4 @@
-<|{all_jobs}|table|columns={columns}|width='100%'|on_action={on_table_click}|>
+<|{all_jobs}|table|columns={columns}|width='100%'|on_action={on_table_click}|style=on_style|>
 <|Refresh List|button|on_action={refresh_job_list}|>
 <|Run Pipeline...|button|on_action={open_run_pipeline_dialog}|>
 

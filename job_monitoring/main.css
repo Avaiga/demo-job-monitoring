@@ -180,3 +180,19 @@ body,
     background-color: #283282;
     color: #fff;
 }
+
+.red td {
+    color: red;
+}
+
+.blue td {
+    color:blue;
+}
+
+.green td {
+    color: green;
+}
+
+.orange td {
+    color: orange;
+}

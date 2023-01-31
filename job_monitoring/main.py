@@ -6,7 +6,7 @@ from taipy.gui import Gui
 import os
 
 # Variables for bindings
-all_jobs = []
+all_jobs = [['','','','']]
 show_dialog_run_pipeline = False
 selected_pipeline = None
 show_details_pane = False
